@@ -11,10 +11,8 @@ def init_browser():
     executable_path = {'executable_path': 'chromedriver.exe'}
     browser = Browser('chrome', **executable_path, headless=False)
 
-    mars_info = {}
 
-
-def scrape_mars_news():
+def scrape():
     browser = init_browser()
     
     # Latest NASA News Article 
@@ -30,12 +28,7 @@ def scrape_mars_news():
     news_title = soup.find('div', class_='content_title').find('a').text
     news_p = soup.find('div', class_='article_teaser_body').text
 
-    # Dictionary entry from News 
-    mars_info['news_title'] = news_title
-    mars_info['news_p'] = news_p
 
-def scrape_image_url():
-    browser = init_browser()
     # JPL Mars Space Images - Featured Image
     featured_image_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
     browser.visit(featured_image_url)
@@ -49,13 +42,7 @@ def scrape_image_url():
     # Retrieve background-image url from style tag
     featured_image_url = image_soup.find('article')['style'].replace('background-image: url(', '').replace(');', '')[1:-1]
     
-    # Dictionary entry from Featured Image URL
-    mars_info['featured_image_url'] = featured_image_url
     
-    browser.quit()
-
-def scrape_weather_tweet():
-    browser = init_browser()
     # Mars Weather
     # Visit Mars Weather Twitter through splinter module
     weather_url = 'https://twitter.com/marswxreport?lang=en'
@@ -70,14 +57,7 @@ def scrape_weather_tweet():
     # Find all elements that contain tweets
     weather_tweet = tweet_soup.find('p', class_='TweetTextSize TweetTextSize--normal js-tweet-text tweet-text').text
 
-    # Dictionary entry for Weather Tweet
-    mars_info['weather_tweet'] = weather_tweet
 
-    browser.quit()
-
-
-def scrape_mars_facts():
-    browser = init_browser()
     # Mars Facts
     # Scrape the table of Mars facts
     facts_url = 'https://space-facts.com/mars/'
@@ -103,14 +83,7 @@ def scrape_mars_facts():
     # Convert Dataframe to HTML
     mars_facts = facts_df.to_html()
 
-    # Dictionary entry for Mars Facts
-    mars_info['mars_facts'] = mars_facts
 
-    browser.quit()
-
-
-def scrape_hemispheres():
-    browser = init_browser()
     # Mars Hemispheres
     # Visit hemispheres website through splinter module
     hemispheres_url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
@@ -155,8 +128,23 @@ def scrape_hemispheres():
         # Append the retreived information into a list of dictionaries
         hemisphere_image_urls.append({"title": title, "img_url": img_url})
 
-        # Dictionary for Hemishperes
-        mars_info['hemisphere_image_urls'] = hemisphere_image_urls
-        
+        mars_info = {'news_title': news_title, 'news_p': news_p, 'featured_image_url': featured_image_url,
+                     'weather_tweet': weather_tweet, 'mars_facts': mars_facts, 'hemisphere_image_urls': hemisphere_image_urls, "title": title, "img_url": img_url}
+
         browser.quit()
+
+        # Setup connection to mongodb
+        #conn = "mongodb://localhost:27017"
+        #client = pymongo.MongoClient(conn)
+
+        # Select database and collection to use
+        #db = db.mars
+        #collection = db.mars_info
+
+        #db.mars_info.insert_many(
+
+        #[{'news_title': news_title,'news_p': news_p, 'featured_image_url': featured_image_url,'weather_tweet': weather_tweet,'mars_facts': mars_facts,'hemisphere_image_urls':hemisphere_image_urls}]
+
+        #print("Data Uploaded!")
+
 
