@@ -1,6 +1,7 @@
 # Dependencies
 import pandas as pd
 import requests
+import time 
 import pymongo
 from bs4 import BeautifulSoup
 from splinter import Browser
@@ -14,24 +15,27 @@ def init_browser():
 
 def scrape():
     browser = init_browser()
+    mars_info = {}
     
     # Latest NASA News Article 
     nasa_url = 'https://mars.nasa.gov/news/'
     browser.visit(nasa_url)
+    time.sleep(2)
 
     # HTML Object
     html = browser.html
     # Parse HTML with Beautiful Soup
-    soup = BeautifulSoup(html, 'html.parser')
+    nasa_soup = BeautifulSoup(html, 'html.parser')
 
     # Retrieve the latest news_title and news_paragraph
-    news_title = soup.find('div', class_='content_title').find('a').text
-    news_p = soup.find('div', class_='article_teaser_body').text
+    news_title = nasa_soup.find('div', class_='content_title').find('a').text
+    news_p = nasa_soup.find('div', class_='article_teaser_body').text
 
 
     # JPL Mars Space Images - Featured Image
     featured_image_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
     browser.visit(featured_image_url)
+    time.sleep(2)
 
     # HTML Object
     html_image = browser.html
@@ -47,6 +51,7 @@ def scrape():
     # Visit Mars Weather Twitter through splinter module
     weather_url = 'https://twitter.com/marswxreport?lang=en'
     browser.visit(weather_url)
+    time.sleep(2)
     
     # HTML Object
     weather_html = browser.html
@@ -88,6 +93,7 @@ def scrape():
     # Visit hemispheres website through splinter module
     hemispheres_url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
     browser.visit(hemispheres_url)
+    time.sleep(2)
     
     # HTML Object
     html_hemi = browser.html
@@ -133,18 +139,25 @@ def scrape():
 
         browser.quit()
 
+        return mars_info
+
         # Setup connection to mongodb
-        #conn = "mongodb://localhost:27017"
-        #client = pymongo.MongoClient(conn)
+        conn = "mongodb://localhost:27017"
+        client = pymongo.MongoClient(conn)
 
-        # Select database and collection to use
-        #db = db.mars
-        #collection = db.mars_info
+        #Select database and collection to use
+        db = db.mars
+        collection = db.mars_info
 
-        #db.mars_info.insert_many(
+        db.mars_info.insert_many(
 
-        #[{'news_title': news_title,'news_p': news_p, 'featured_image_url': featured_image_url,'weather_tweet': weather_tweet,'mars_facts': mars_facts,'hemisphere_image_urls':hemisphere_image_urls}]
-
-        #print("Data Uploaded!")
-
-
+        [
+            {'news_title': news_title,
+            'news_p': news_p, 
+            'featured_image_url': featured_image_url,
+            'weather_tweet': weather_tweet,
+            'mars_facts': mars_facts,
+            'hemisphere_image_urls':hemisphere_image_urls}
+            ]
+        )
+        print("Data Uploaded!")
