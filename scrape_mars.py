@@ -1,7 +1,6 @@
 # Dependencies
 import pandas as pd
 import requests
-import time 
 import pymongo
 from bs4 import BeautifulSoup
 from splinter import Browser
@@ -20,7 +19,6 @@ def scrape():
     # Latest NASA News Article 
     nasa_url = 'https://mars.nasa.gov/news/'
     browser.visit(nasa_url)
-    time.sleep(2)
 
     # HTML Object
     html = browser.html
@@ -35,7 +33,6 @@ def scrape():
     # JPL Mars Space Images - Featured Image
     featured_image_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
     browser.visit(featured_image_url)
-    time.sleep(2)
 
     # HTML Object
     html_image = browser.html
@@ -51,7 +48,6 @@ def scrape():
     # Visit Mars Weather Twitter through splinter module
     weather_url = 'https://twitter.com/marswxreport?lang=en'
     browser.visit(weather_url)
-    time.sleep(2)
     
     # HTML Object
     weather_html = browser.html
@@ -93,7 +89,6 @@ def scrape():
     # Visit hemispheres website through splinter module
     hemispheres_url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
     browser.visit(hemispheres_url)
-    time.sleep(2)
     
     # HTML Object
     html_hemi = browser.html
