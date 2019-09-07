@@ -7,7 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Mission to Mars</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
 
 </head>
 
@@ -21,18 +22,20 @@
 
         <!-- News Section -->
         <div class="container">
+        <!--Mars News-->
             <h3 style="color: red">Latest Mars News</h3>
             <p style="color: grey">{{ mars_info.news_title }}</p>
             <p style="color: grey">{{ mars_info.news_p }}</p>
- 
+        <!--Mars Image-->
             <h3 style="color: red">Featured Mars Image</h3>
             <img src="{{ mars_info.featured_image_url }}" style="text-color:grey; max-width:100%; max-height: auto;" alt="Mars Featured Image">
-
+        <!--Mars Weather-->
             <h6 style="color: red">Current Weather on Mars</h6>
             <p style="color: grey">{{ mars_info.weather_tweet }}</p>
-
+        <!--Mars Facts-->
             <h3 style="color: red">Mars Facts</h3>
             <p style="color: grey">{{ mars_info.mars_facts}}</p>
+        <!--Mars Hemispheres-->
             <h3 style="color: red">Mars Hemispheres</h3>
                 {% for item in mars_info.hemisphere_image_urls %}
                     <img class="card-img-top" src="{{ mars_info.img_url }}" />

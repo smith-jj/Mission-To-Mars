@@ -1,8 +1,7 @@
 # Dependencies and Setup
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template
 from flask_pymongo import PyMongo
 import scrape_mars
-import os
 
 # Create an instance of Flask
 app = Flask(__name__)
@@ -20,12 +19,13 @@ def index():
 
 # Scrape Route to Import `scrape_mars.py` Script & Call `scrape` Function
 @app.route("/scrape")
-def scrapper():
+def scrape():
     mars = mongo.db.mars
-    mars_data = scrape_mars.scrape()
+    mars_data = scrape_mars.scrape_all()
     mars.update({}, mars_data, upsert=True)
-    return redirect("/", code=302)
+    return "Scraping Successful!"
+
 
 # Define Main Behavior
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
